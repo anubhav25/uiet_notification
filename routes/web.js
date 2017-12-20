@@ -4,6 +4,7 @@ var cheerio = require('cheerio');
 var request = require('request');
 var fs= require('fs')
 
+function doit(){
 var fcm =require('./fcm')
 const exec = require('child_process').exec;
 console.log('now');
@@ -21,13 +22,19 @@ const pyProg = exec('python routes/a.py');
         console.log(data)
 
     });
+}
 
+doit();
 
 
 app.get('/', function(req, res, next) {
 var arr = JSON.parse(fs.readFileSync(__dirname+'/allNotifications.txt'));
 res.render('web', { title: 'Express',mylist:arr });
  //res.sendFile(__dirname+'/allNotifications.txt');
+});
+app.get('/refresh', function(req, res, next) {
+doit()
+res.send('done');
 });
 
 app.get('/all', function(req, res, next) {
