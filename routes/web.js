@@ -3,11 +3,15 @@ var app = express.Router();
 var cheerio = require('cheerio');
 var request = require('request');
 
+const { spawn } = require('child_process');
+
+spawn('pip install selenium',[]);
+
 /* GET home page. */
 app.get('/', function(req, res, next) {
 
 
-	const { spawn } = require('child_process');
+	
 	console.log('hi')
     const pyProg = spawn('python',[__dirname+"/a.py"]);
     pyProg.stdout.on('data', function(data) {
