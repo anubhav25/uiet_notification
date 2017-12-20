@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <ul>
+
+    <% for ( var i in mylist){ %>
+	<li>
+		<b><%= mylist[i].date +'::'%></b>
+		<a href=<%= mylist[i].link +'::'%>><%= mylist[i].body %></a>
+	</li>
+
+   <% }%>
+
+    </ul>
+  </body>
+</html>

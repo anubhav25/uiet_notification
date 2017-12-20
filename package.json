@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "install_python" : "pip install selenium",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -13,6 +12,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "fcm-node": "^1.2.1",
     "morgan": "~1.9.0",
     "python-shell": "^0.4.0",
     "request": "^2.83.0",

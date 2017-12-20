@@ -2,43 +2,42 @@ var express = require('express');
 var app = express.Router();
 var cheerio = require('cheerio');
 var request = require('request');
+var fs= require('fs')
 
-const { spawn } = require('child_process');
-
-spawn('pip install selenium',[]);
-
-/* GET home page. */
-app.get('/', function(req, res, next) {
-
-
-	
-	console.log('hi')
-    const pyProg = spawn('python',[__dirname+"/a.py"]);
-    pyProg.stdout.on('data', function(data) {
-
-        console.log(data.toString());
-         console.log('done');
-         res.send(data+'<br>'+data.toString()+'<br>'+'done');
+var fcm =require('./fcm')
+const exec = require('child_process').exec;
+console.log('now');
+const pyProg = exec('python routes/a.py');
+  	pyProg.stdout.on('data', function(data) {
+  		if(data!=='done\r\n'){
+  			obj=JSON.parse(data);
+  			fcm('UIET',obj.body,data);
+  		}
+        console.log(data)
 
     });
     pyProg.stderr.on('data', (data) => {
 
-        console.log(data.toString());
-        console.log('done');
-         res.send(data+'<br>'+'data.toString()'+'<br>'+'err');
+        console.log(data)
+
     });
 
-/*    const { spawn } = require('child_process');
-    const pyProg = spawn('python',[__dirname+"/result.py"]);
 
-    pyProg.stdout.on('data', function(data) {
 
-        console.log(data.toString());
-        res.write(data);
-        res.end('end');
+app.get('/', function(req, res, next) {
+var arr = JSON.parse(fs.readFileSync(__dirname+'/allNotifications.txt'));
+res.render('web', { title: 'Express',mylist:arr });
+ //res.sendFile(__dirname+'/allNotifications.txt');
+});
 
-    });*/
- // res.render('index', { title: 'Express' });
+app.get('/all', function(req, res, next) {
+res.json(JSON.parse(fs.readFileSync(__dirname+'/allNotifications.txt')));
+ //res.sendFile(__dirname+'/allNotifications.txt');
+});
+
+app.get('/latest', function(req, res, next) {
+res.json(JSON.parse(fs.readFileSync('./latest.txt')));
+ //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
 
