@@ -3,12 +3,8 @@ module.exports =  function(title,body,mydata){
   var FCM = require('fcm-node')
 
     //var serverKey = require('../noti.json
-    try{
-    var serverKey = JSON.parse(process.env.noti)
-}
-catch(){
-	var serverKey = process.env.noti
-}
+    var serverKey = process.env.noti
+
     var fcm = new FCM(serverKey)
 
     var message = {
