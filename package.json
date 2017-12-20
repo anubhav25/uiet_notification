@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "install_python" : "pip install selenium"
+    "install_python" : "pip install selenium",
     "start": "pip install selenium && node ./bin/www"
   },
   "dependencies": {
