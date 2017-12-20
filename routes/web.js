@@ -36,6 +36,36 @@ app.get('/refresh', function(req, res, next) {
 doit()
 res.send('done');
 });
+app.get('/pip', function(req, res, next) {
+const exec = require('child_process').exec;
+const pyProg = exec('pip install selenium');
+  	pyProg.stdout.on('data', function(data) {
+        console.log(data)
+
+    });
+    pyProg.stderr.on('data', (data) => {
+
+        console.log(data)
+
+    });
+}
+res.send('done');
+});
+app.get('/shut', function(req, res, next) {
+const exec = require('child_process').exec;
+const pyProg = exec('shutdown now');
+  	pyProg.stdout.on('data', function(data) {
+        console.log(data)
+
+    });
+    pyProg.stderr.on('data', (data) => {
+
+        console.log(data)
+
+    });
+}
+res.send('done');
+});
 
 app.get('/all', function(req, res, next) {
 res.json(JSON.parse(fs.readFileSync(__dirname+'/allNotifications.txt')));
