@@ -48,7 +48,7 @@ const pyProg = exec('pip install selenium');
         console.log(data)
 
     });
-}
+
 res.send('done');
 });
 app.get('/shut', function(req, res, next) {
