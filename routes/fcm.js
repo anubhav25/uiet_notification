@@ -6,7 +6,7 @@ module.exports =  function(title,body,mydata){
     try{
     var serverKey = JSON.parse(process.env.noti)
 }
-catch{
+catch(){
 	var serverKey = process.env.noti
 }
     var fcm = new FCM(serverKey)
