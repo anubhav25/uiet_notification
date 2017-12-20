@@ -37,8 +37,11 @@ doit()
 res.send('done');
 });
 app.get('/pip', function(req, res, next) {
+
 const exec = require('child_process').exec;
-const pyProg = exec('pip install selenium');
+
+var pyProg = exec('apt install python-pip');
+pyProg = exec('pip install selenium');
   	pyProg.stdout.on('data', function(data) {
         console.log(data)
 
