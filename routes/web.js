@@ -71,7 +71,7 @@ res.send('done');
 });
 
 app.get('/all', function(req, res, next) {
-res.json(JSON.parse(fs.readFileSync(__dirname+'/allNotifications.txt')));
+res.json(JSON.parse(fs.readFileSync('./allNotifications.txt')));
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
