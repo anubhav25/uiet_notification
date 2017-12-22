@@ -49,16 +49,20 @@ res.json(JSON.parse(fs.readFileSync('./latest.txt')));
 });
 
 app.get('/keepmeawake',(req,res)=>{
+	doit()
     console.log('awaken');
-    setInterval(()=>{
+    var fun=()=>{
         var myurl = "http://resultuiet.herokuapp.com/keepmeawake"
   request({
   url: myurl,
   headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
 },(err,res,body)=>{
+	console.log('req sent')
 });
-}, 1000*60*60*4);
+};
+fun()
+    setInterval(fun, 1000*60*60*4);
 res.send('done')
 })
 
