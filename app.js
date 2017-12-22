@@ -24,9 +24,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-const exec = require('child_process').exec;
-console.log('here');
-const variable = exec('pip install selenium');
 app.use('/web', web);
 app.use('/users', users);
 /*
