@@ -48,8 +48,8 @@ res.json(JSON.parse(fs.readFileSync('./latest.txt')));
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
-app.get('keepmeawake',(req,res)=>{
-    console.log(awaken);
+app.get('/keepmeawake',(req,res)=>{
+    console.log('awaken');
     setInterval(()=>{
         var myurl = "http://resultuiet.herokuapp.com/keepmeawake"
   request({
@@ -59,7 +59,7 @@ app.get('keepmeawake',(req,res)=>{
 },(err,res,body)=>{
 });
 }, 1000*60*60*4);
-
+res.send('done')
 })
 
 module.exports = app;
