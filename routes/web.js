@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express.Router();
-var cheerio = require('cheerio');
 var request = require('request');
 var fs= require('fs')
 var scrap=require('./scrap');
@@ -49,6 +48,18 @@ res.json(JSON.parse(fs.readFileSync('./latest.txt')));
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
+app.get('keepmeawake',(req,res)=>{
+    console.log(awaken);
+    setInterval(()=>{
+        var myurl = "http://resultuiet.herokuapp.com/keepmeawake"
+  request({
+  url: myurl,
+  headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
+},(err,res,body)=>{
+});
+}), 1000*60*60*4);
+    
+})
 
 module.exports = app;
