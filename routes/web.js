@@ -121,7 +121,7 @@ app.get('/keepmeawake',(req,res)=>{
 	console.log('req sent')
 });
 };
-fun()
+
     setTimeout(fun, 1000*60*14);
 res.send('done')
 })
