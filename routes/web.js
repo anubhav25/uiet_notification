@@ -92,7 +92,7 @@ app.get('/download',(req,res)=>{
     res.download('./app.apk','uietNotifications.apk')
 })
 
-app.get('change',(req,res)=>{
+app.get('/change',(req,res)=>{
 	
 	fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
 	res.end('done');
