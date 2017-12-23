@@ -29,10 +29,10 @@ scrap()
 
 var devicecs;
 try{
-	devicecs=JSON.parse(fs.readFileSync('./devices','utf-8'));
+	devicecs=JSON.parse(fs.readFileSync('./devices.txt','utf-8'));
 }
 catch(e){
-	devicecs=[['dAsxq6-OeBQ:APA91bHQwWlayCMctZI-_hbaVJ98Rihhh0X000Swo9PNMYZ5NvP3UEdD6aoJPyG0hy7ihH4skurcEtGhqit9it_r2MusRp7kd8I2aRqTTu0pkGVm6FIQXjT1O33qTEBV6BEBaIQdIxma']]
+	devicecs=[[]]
 }
 
 
@@ -41,7 +41,8 @@ catch(e){
 
 doit();
 app.post('/addNewToken',(req,res)=>{
-	var newKey=req.body.key;
+	console.log(req.body);
+	var newKey=req.body.token;
 	console.log('new Device '+newKey);
 	for(var i=0;i<devicecs.length;i++){
 		for ( var j=0;j<devicecs[i].length;j++){
@@ -59,7 +60,7 @@ app.post('/addNewToken',(req,res)=>{
 		else{
 			devicecs[devicecs.length-1].push(newKey);
 		}
-		fs.writeFileSync('./devices', JSON.stringify(devicecs));
+		fs.writeFileSync('./devices.txt', JSON.stringify(devicecs));
 	}
 	res.end()
 });
@@ -86,7 +87,7 @@ res.json(JSON.parse(fs.readFileSync('./latest.txt')));
 });
 
 app.get('/download',(req,res)=>{
-    res.download('./a.apk','uietNotifications.apk')
+    res.download('./app.apk','uietNotifications.apk')
 })
 
 
