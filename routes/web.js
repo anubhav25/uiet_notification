@@ -16,6 +16,7 @@ scrap()
   	fcm(devicecs,'UIET',obj.body,data);
   		}
   		catch(e){
+  			console.log(e)
   			return;
   		}
 })

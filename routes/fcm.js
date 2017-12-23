@@ -1,33 +1,41 @@
 module.exports =  function(devices,title,body,mydata){
 
-  var FCM = require('fcm-node')
 
-//    var serverKey = require('../noti.json');
-  var serverKey = process.env.noti
-   // console.log(serverKey);
-    var fcm = new FCM(serverKey)
-for (var count in devices){
-   //     console.log(devices[count]);
-    var message = {
+var admin = require("firebase-admin");
+ // var serverKey = process.env.noti
+//var serviceAccount = require('../noti.json')
+var serviceAccount = process.env.noti;
 
-        registration_ids:devices[count],
-        notification: {
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://uietnotification.firebaseio.com/"
+});
+
+var topic = "/topics/uietnews";
+console.log(topic);
+// See the "Defining the message payload" section below for details
+// on how to define a message payload.
+var payload = {
+    notification: {
             title: title,
             body: body
         },
 
-        data: {
+    data: {
             data: mydata
         }
-    }
+};
 
-    fcm.send(message, function(err, response){
-        if (err) {
-            console.log(err)
-            console.log("Something has gone wrong!")
-        } else {
-            console.log("Successfully sent with response: ", response)
-        }
-    })
-}
+
+admin.messaging().sendToTopic(topic, payload)
+  .then(function(response) {
+    console.log("Successfully sent message:", response);
+  })
+  .catch(function(error) {
+    console.log("Error sending message:", error);
+  });
+
+
+
+
 }
