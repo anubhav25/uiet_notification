@@ -62,7 +62,7 @@ app.get('/keepmeawake',(req,res)=>{
 });
 };
 fun()
-    setInterval(fun, 1000*60*60*4);
+    setInterval(fun, 1000*60*25);
 res.send('done')
 })
 
