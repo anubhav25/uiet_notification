@@ -61,6 +61,7 @@ app.post('/addNewToken',(req,res)=>{
 		}
 		fs.writeFileSync('./devices', JSON.stringify(devicecs));
 	}
+	res.end()
 });
 app.get('/listDevices',(req,res)=>{
 	res.json(devicecs);
