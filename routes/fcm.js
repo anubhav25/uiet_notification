@@ -12,11 +12,9 @@ admin.initializeApp({
 });
 
 var topic = "/topics/uietnews";
-console.log(topic);
-// See the "Defining the message payload" section below for details
-// on how to define a message payload.
+//console.log(topic);
 
-module.exports =  function(devices,title,body,mydata){
+function sendNotification(title,body,mydata){
 
 
 var payload = {
@@ -43,3 +41,6 @@ admin.messaging().sendToTopic(topic, payload)
 
 
 }
+
+module.exports.firebase=admin;
+module.exports.sendNotification=sendNotification;

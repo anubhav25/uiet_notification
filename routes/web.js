@@ -2,24 +2,18 @@ var express = require('express');
 var app = express.Router();
 var request = require('request');
 var fs= require('fs')
-var scrap=require('./scrap');
-
-function doit(){
 var fcm =require('./fcm');
-scrap()
-.then(()=>{
-	try{
+var scrap=require('./scrap');
+//console.log(fcm)
+function doit(){
 
-	var data=fs.readFileSync('./latest.txt','utf-8')
-  	obj=JSON.parse(data);
-  	console.log(data)
-  	fcm(devicecs,'UIET',obj.body,data);
+scrap(fcm.firebase)
+.then((latest)=>{
+
+  	console.log(latest)
+  	fcm.sendNotification('UIET',latest.body,JSON.stringify(latest));
   		}
-  		catch(e){
-  			console.log(e)
-  			return;
-  		}
-})
+)
 .catch(()=>{
 	console.log('no change')
 	return;
@@ -28,54 +22,12 @@ scrap()
 }
 
 
-var devicecs;
-try{
-	devicecs=JSON.parse(fs.readFileSync('./devices.txt','utf-8'));
-}
-catch(e){
-	devicecs=[[]]
-}
-
-
-
 
 
 doit();
-app.post('/addNewToken',(req,res)=>{
 
-	console.log(req.body);
-	var newKey=req.body.token;
-	console.log('new Device '+newKey);
-	for(var i=0;i<devicecs.length;i++){
-		for ( var j=0;j<devicecs[i].length;j++){
-			if(devicecs[i][j]===newKey){
-				break;
-			}
-		}
-	}
-	if(i===devicecs.length){
-		if(devicecs[devicecs.length-1].length >= 99){
-			var a = []
-			a.push(newKey);
-			devicecs.push(newKey);
-		}
-		else{
-			devicecs[devicecs.length-1].push(newKey);
-		}
-		fs.writeFileSync('./devices.txt', JSON.stringify(devicecs));
-	}
-	res.end()
-});
-app.get('/count',(req,res)=>{
-	var c=0;
-	for (var i in devicecs){
-		c+=devicecs[i].length;
-	}
-	res.send(c);
-})
-app.get('/listDevices',(req,res)=>{
-	res.json(devicecs);
-})
+
+
 app.get('/', function(req, res, next) {
 var arr = JSON.parse(fs.readFileSync('./allNotifications.txt'));
 res.render('web', { title: 'Notifications',mylist:arr });
@@ -87,6 +39,7 @@ app.get('/refresh', function(req, res, next) {
 doit();
 res.send('done');
 });
+
 app.get('/all', function(req, res, next) {
 res.json(JSON.parse(fs.readFileSync('./allNotifications.txt')));
  //res.sendFile(__dirname+'/allNotifications.txt');
@@ -102,8 +55,8 @@ app.get('/download',(req,res)=>{
 })
 
 app.get('/change',(req,res)=>{
-	
-	fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
+	fcm.firebase.database().ref('/latest').set({"date":"dummydata"});
+	//fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
 	res.end('done');
 
 })

@@ -1,8 +1,7 @@
 var cheerio = require('cheerio');
 var request = require('request');
-var fs= require('fs')
 
-function processAll(mylist){
+function processAll(mylist,firebase){
   processedList=[]
   for (var i in mylist){
     var temp = cheerio.load(mylist[i])
@@ -16,46 +15,34 @@ function processAll(mylist){
     }
     processedList.push(result)
 }
-fs.writeFileSync('./allNotifications.txt',JSON.stringify(processedList));
-fs.writeFileSync('./latest.txt',JSON.stringify(processedList[0]));
+firebase.database().ref('/allNotifications').set(processedList);
+firebase.database().ref('/latest').set(processedList[0]);
 return processedList;
 }
 
 
-function fun(){
- 
+function fun(firebase){
+
    return new Promise(function(resolve,reject){
   var myurl = "http://uietkuk.org/detailedannouc.php"
   request({
   url: myurl,
   headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
-},(err,res,body)=>{
+},(err,res,html_doc)=>{
     if (err) {
     console.log(err);
     throw err;
     }
-    var ans=processHTML(body);
-    if(ans){
-      resolve();
-    }
-    else{
-      reject()
-    }
-    })
-  });
-}
 
- function processHTML(html_doc){
   var $=cheerio.load(html_doc);
-  try{
-    var latest = JSON.parse(fs.readFileSync('./latest.txt','utf-8'));
-  }
-  catch(e) {
-    latest={"date":"dummydata"};
-  }
   label=$('label[style = "color:#a94442;"]')[0];
-  if ($(label).text() !== latest.date){
+    firebase.database().ref('/latest').once('value',(data)=>{
+
+    var latest=data.val()||{"date":"dummydata"};
+    console.log(latest);
+    console.log('latest');
+    if ($(label).text() !== latest.date){
 
     var allList=[]
     var parent =label.parent;
@@ -67,12 +54,16 @@ function fun(){
 
     }
 
-    var processedList=processAll(allList)
+    var processedList=processAll(allList,firebase)
 
-    return true
+    resolve(processedList[0])
   }
-  return false
-}
+  reject();
 
+ });
+
+    })
+  });
+}
 
 module.exports = fun;
