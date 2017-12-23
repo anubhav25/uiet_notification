@@ -48,6 +48,11 @@ res.json(JSON.parse(fs.readFileSync('./latest.txt')));
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
+app.get('/download',(req,res)=>{
+    res.download('./a.apk','uietNotifications.apk')
+})
+
+
 app.get('/keepmeawake',(req,res)=>{
 	doit()
     console.log('awaken');
