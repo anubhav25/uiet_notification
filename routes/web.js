@@ -73,7 +73,9 @@ res.render('web', { title: 'Notifications',mylist:arr });
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 app.get('/refresh', function(req, res, next) {
-doit()
+
+fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
+doit();
 res.send('done');
 });
 app.get('/all', function(req, res, next) {
@@ -90,6 +92,11 @@ app.get('/download',(req,res)=>{
     res.download('./app.apk','uietNotifications.apk')
 })
 
+app.get('change',(req,res)=>{
+	res.end('done');
+	fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
+
+})
 
 app.get('/keepmeawake',(req,res)=>{
 	doit()
