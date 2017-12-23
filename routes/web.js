@@ -74,7 +74,7 @@ res.render('web', { title: 'Notifications',mylist:arr });
 });
 app.get('/refresh', function(req, res, next) {
 
-fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
+//fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
 doit();
 res.send('done');
 });
@@ -93,8 +93,9 @@ app.get('/download',(req,res)=>{
 })
 
 app.get('change',(req,res)=>{
-	res.end('done');
+	
 	fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
+	res.end('done');
 
 })
 
