@@ -13,7 +13,7 @@ scrap()
 	var data=fs.readFileSync('./latest.txt','utf-8')
   	obj=JSON.parse(data);
   	console.log(data)
-  	fcm('UIET',obj.body,data);
+  	fcm(devicecs,'UIET',obj.body,data);
   		}
   		catch(e){
   			return;
@@ -26,12 +26,48 @@ scrap()
 
 }
 
+
+var devicecs;
+try{
+	devicecs=JSON.parse(fs.readFileSync('./devices','utf-8'));
+}
+catch(e){
+	devicecs=[['dAsxq6-OeBQ:APA91bHQwWlayCMctZI-_hbaVJ98Rihhh0X000Swo9PNMYZ5NvP3UEdD6aoJPyG0hy7ihH4skurcEtGhqit9it_r2MusRp7kd8I2aRqTTu0pkGVm6FIQXjT1O33qTEBV6BEBaIQdIxma']]
+}
+
+
+
+
+
 doit();
-
-
+app.post('/addNewToken',(req,res)=>{
+	var newKey=req.body.key;
+	console.log('new Device '+newKey);
+	for(var i=0;i<devicecs.length;i++){
+		for ( var j=0;j<devicecs[i].length;j++){
+			if(devicecs[i][j]===newKey){
+				break;
+			}
+		}
+	}
+	if(i===devicecs.length){
+		if(devicecs[devicecs.length-1].length >= 99){
+			var a = []
+			a.push(newKey);
+			devicecs.push(newKey);
+		}
+		else{
+			devicecs[devicecs.length-1].push(newKey);
+		}
+		fs.writeFileSync('./devices', JSON.stringify(devicecs));
+	}
+});
+app.get('/listDevices',(req,res)=>{
+	res.json(devicecs);
+})
 app.get('/', function(req, res, next) {
 var arr = JSON.parse(fs.readFileSync('./allNotifications.txt'));
-res.render('web', { title: 'Express',mylist:arr });
+res.render('web', { title: 'Notifications',mylist:arr });
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 app.get('/refresh', function(req, res, next) {
