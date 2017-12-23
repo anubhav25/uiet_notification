@@ -2,8 +2,8 @@ module.exports =  function(devices,title,body,mydata){
 
   var FCM = require('fcm-node')
 
-    var serverKey = require('../noti.json');
-//  var serverKey = process.env.noti
+//    var serverKey = require('../noti.json');
+  var serverKey = process.env.noti
    // console.log(serverKey);
     var fcm = new FCM(serverKey)
 for (var count in devices){
