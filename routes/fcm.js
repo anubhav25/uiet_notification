@@ -4,10 +4,10 @@ module.exports =  function(devices,title,body,mydata){
 
 //    var serverKey = require('../noti.json');
   var serverKey = process.env.noti
-    console.log(serverKey);
+   // console.log(serverKey);
     var fcm = new FCM(serverKey)
 for (var count in devices){
-     console.log(devices[count]);
+   //     console.log(devices[count]);
     var message = {
 
         registration_ids:devices[count],

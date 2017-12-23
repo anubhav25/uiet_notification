@@ -41,6 +41,7 @@ catch(e){
 
 doit();
 app.post('/addNewToken',(req,res)=>{
+
 	console.log(req.body);
 	var newKey=req.body.token;
 	console.log('new Device '+newKey);
@@ -64,6 +65,13 @@ app.post('/addNewToken',(req,res)=>{
 	}
 	res.end()
 });
+app.get('/count',(req,res)=>{
+	var c=0;
+	for (var i in devicecs){
+		c+=devicecs[i].length;
+	}
+	res.send(c);
+})
 app.get('/listDevices',(req,res)=>{
 	res.json(devicecs);
 })
