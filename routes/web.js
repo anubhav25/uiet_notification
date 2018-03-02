@@ -29,8 +29,14 @@ doit();
 
 
 app.get('/', function(req, res, next) {
-var arr = JSON.parse(fs.readFileSync('./allNotifications.txt'));
-res.render('web', { title: 'Notifications',mylist:arr });
+fcm.firebase.database().ref('/allNotifications').on("value", function(snapshot) {
+ // console.log(snapshot.val());
+res.render('web', { title: 'Notifications',mylist: snapshot.val() });
+ 
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+  res.end();
+});
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 app.get('/refresh', function(req, res, next) {
@@ -41,13 +47,26 @@ res.send('done');
 });
 
 app.get('/all', function(req, res, next) {
-res.json(JSON.parse(fs.readFileSync('./allNotifications.txt')));
+fcm.firebase.database().ref('/allNotifications').on("value", function(snapshot) {
+ // console.log(snapshot.val());
+res.json(snapshot.val());
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+  res.end();
+});
+
  //res.sendFile(__dirname+'/allNotifications.txt');
 });
 
 app.get('/latest', function(req, res, next) {
-res.json(JSON.parse(fs.readFileSync('./latest.txt')));
- //res.sendFile(__dirname+'/allNotifications.txt');
+ fcm.firebase.database().ref('/latest').on("value", function(snapshot) {
+ // console.log(snapshot.val());
+res.json(snapshot.val());
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+  res.end();
+});
+
 });
 
 app.get('/download',(req,res)=>{
@@ -56,7 +75,6 @@ app.get('/download',(req,res)=>{
 
 app.get('/change',(req,res)=>{
 	fcm.firebase.database().ref('/latest').set({"date":"dummydata"});
-	//fs.writeFileSync('./latest.txt',JSON.stringify({"date":"dummydata"}));
 	res.end('done');
 
 })
@@ -65,7 +83,7 @@ app.get('/keepmeawake',(req,res)=>{
 	doit()
     console.log('awaken');
     var fun=()=>{
-        var myurl = "http://resultuiet.herokuapp.com/keepmeawake"
+        var myurl = "https://uietnotification.herokuapp.com/keepmeawake"
   request({
   url: myurl,
   headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
@@ -75,7 +93,7 @@ app.get('/keepmeawake',(req,res)=>{
 });
 };
 
-    setTimeout(fun, 1000*60*14);
+    setTimeout(fun, 1000*60*24);
 res.send('done')
 })
 
