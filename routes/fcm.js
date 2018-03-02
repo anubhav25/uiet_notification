@@ -2,9 +2,12 @@
 
 var admin = require("firebase-admin");
  // var serverKey = process.env.noti
+try {
 var serviceAccount = require('../noti.json')
+} catch (e) {
+	var serviceAccount = JSON.parse(process.env.noti);
+}
 
-var serviceAccount = JSON.parse(process.env.noti);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
