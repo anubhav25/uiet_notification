@@ -3,7 +3,7 @@
 var admin = require("firebase-admin");
  // var serverKey = process.env.noti
 try {
-var serviceAccount = require('../noti.json')
+var serviceAccount = require('../uiet-2f78e-firebase-adminsdk-8c11r-b494da6b49.json')
 } catch (e) {
 	var serviceAccount = JSON.parse(process.env.noti);
 }
@@ -11,7 +11,7 @@ var serviceAccount = require('../noti.json')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://uietnotification.firebaseio.com/"
+  databaseURL: "https://uiet-2f78e.firebaseio.com/"
 });
 
 var topic = "/topics/uietnews";
